@@ -58,6 +58,18 @@ var totalShards = 2;
 
 console.log(y(`Starting the DBM Bot with ${totalShards} total shards...`))
 
+// dbm's encryption system
+var crypto = require('crypto');
+
+var decrypt = function(text) {
+	if(this.password.length === 0) return text;
+	const decipher = this.crypto.createDecipher('aes-128-ofb', this.password);
+	let dec = decipher.update(text, 'hex', 'utf8');
+	dec += decipher.final('utf8');
+	return dec;
+};
+
+
 
 var token = require(__dirname + "/data/settings.json").token;
 
