@@ -58,31 +58,54 @@ var totalShards = 2;
 
 console.log(y(`Starting the DBM Bot with ${totalShards} total shards...`))
 
-// dbm's encryption system
-var crypto = require('crypto');
 
-var decrypt = function(text) {
-	if(this.password.length === 0) return text;
-	const decipher = this.crypto.createDecipher('aes-128-ofb', this.password);
-	let dec = decipher.update(text, 'hex', 'utf8');
-	dec += decipher.final('utf8');
-	return dec;
-};
+function getToken(){
+	// dbm's encryption system
+	var crypto = require('crypto');
+
+	let password ='';
+
+	try {
+		password = require('discord-bot-maker');
+	} catch(e) {}
+
+	var decrypt = function(text) {
+		if(password.length === 0) return text;
+		const decipher = this.crypto.createDecipher('aes-128-ofb', password);
+		let dec = decipher.update(text, 'hex', 'utf8');
+		dec += decipher.final('utf8');
+		return dec;
+	};
+
+	const fs = require('fs');
+	const path = require('path');	
+
+	const filePath = path.join(process.cwd(),'data', 'settings.json');
 
 
+	if(fs.existsSync(filePath)){
+		var content = fs.readFileSync(filePath) 
+		try {
+			if(typeof content !== 'string' && content.toString) content = content.toString();
+			return JSON.parse(decrypt(content)).token;
+		} catch(e) {
+			console.error(`There was issue parsing settings.json!`);
+			return;
+		}
 
-var token = require(__dirname + "/data/settings.json").token;
+	}else{
+		console.error(`settings.json does not exist!`);
+	}					
+}
 
-
-if(!token){
-	
+if(!getToken()){	
 	console.error(r(`Token must be supplied in 'settings.json' in the data folder, double check your bot settings!`))
 	return;
 }
 
 const Discord = require('discord.js');
 const manager = new Discord.ShardingManager('./bot-shard.js', {
-	token: token 
+	token: getToken() 
 	});
 	
 manager.spawn(Number(totalShards)); 
