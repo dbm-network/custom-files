@@ -5,6 +5,17 @@
  * Modifed by General Wrex
  */
 
+
+// My Patreons have made modifying this script possible @ https://www.patreon.com/generalwrex
+// At the time of editing this script, they are:
+// - MitchDaGamer
+//
+// Thanks so much guys, you allow me to continue to do what i love!	
+// I now accept donations through donorbox: https://donorbox.org/generalwrex
+// and also direct to my paypal: https://www.paypal.me/generalwrex
+//---------------------------------------------------------------------
+
+
 const DBM = {};
 const DiscordJS = DBM.DiscordJS = require('discord.js');
 
@@ -33,9 +44,10 @@ Bot.prefixes = [];
 
 Bot.init = function() {
 	
-	console.log(r("MODIFIED BOT.JS MAY 15th 2018"));
-	console.log(g("This version of bot.js was modified by General Wrex."));
-	console.log(g("It allows you to assign prefixes per server for your bot."));
+	console.log(r("MULTIPLE PREFIX MODIFIED BOT.JS MAY 15th 2018 Version 1"));
+	console.log(g("This version of bot.js was modified by General Wrex.\n"));
+	console.log(y("If you found this helpful and would like to donate, you can now do it through donorbox: https://donorbox.org/generalwrex ! This is not required, only to personally help General Wrex ;)"));
+	console.log(g("\nIt allows you to assign prefixes per server for your bot."));
 	console.log(g("Edit prefixes.json in the data directory to assign prefixes to server id's"));
 	console.log(g("serverPrefixes.json should look like this, with your server id's of course\n"), y(JSON.stringify([{"serverid":"374961173524643843","prefix":"<"},{"serverid":"379372685182107669","prefix":">"}], null, 2)));
 	
