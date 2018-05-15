@@ -34,6 +34,8 @@ Follow the same layout to add new ones, or remove
 
 Remember to not forget the comma's!
 
+Then to use the customized files use `node server-assigned-prefixes-bot.js`, we dont want to replace bot.js, but if you have problems then you can go back to using `node bot.js` then report the problem in the DBM Mods Discord Server!
+
 
 
 # Scripts And Commands
