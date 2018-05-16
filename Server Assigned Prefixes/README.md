@@ -1,6 +1,7 @@
 
 # DBM Mods Server Assigned Prefixes
 
+## Note: You can only use one modified bot.js at a time currently.
 
 Allows your bot created by Discord Bot Maker to use a server assigned prefixes
 
@@ -44,9 +45,9 @@ Then to use the customized files use `node server-assigned-prefixes-bot.js`, we 
 
 **Get Used Prefix**
 
-This snippet will show the prefix used on the server, that was set in the serverPrefixes.json
+This snippet will show the prefix used on the server, that was set in the serverPrefixes.json, otherwise will show the one set by dbm
 ```js
-${server.prefix}
+${server.prefix || Files.data.settings.tag}
 ```
 
 **More To Come**
