@@ -50,6 +50,73 @@ This snippet will show the prefix used on the server, that was set in the server
 ${server.prefix || Files.data.settings.tag}
 ```
 
+**Get Prefix Of Server**
+
+`[prefix]currentprefix [serverid]`
+
+```js
+{
+  "name": "currentprefix",
+  "permissions": "KICK_MEMBERS",
+  "restriction": "1",
+  "_id": "swUaR",
+  "actions": [
+    {
+      "info": "0",
+      "infoIndex": "1",
+      "storage": "1",
+      "varName": "serverid",
+      "name": "Store Command Params"
+    },
+    {
+      "behavior": "0",
+      "interpretation": "0",
+      "code": "var result = Bot.prefixes.find((element) => {return element.serverid === tempVars(\"serverid\")} )\nif(result){\n    msg.channel.send(\"Prefix for server '\" + server.name + \"' is \" + Bot.prefixes.find((element) => {return element.serverid === tempVars(\"serverid\")} ).prefix) \n}\nelse\n{\n  msg.channel.send(\"could not find a prefix for the provided server id.\")\n}\n",
+      "storage": "0",
+      "varName": "",
+      "name": "Run Script"
+    }
+  ]
+}
+```
+
+**Change Prefix Of Server**
+
+`[prefix]changeprefix [serverid] [prefix]`
+
+```js
+{
+  "name": "changeprefix",
+  "permissions": "KICK_MEMBERS",
+  "restriction": "1",
+  "_id": "swUaR",
+  "actions": [
+    {
+      "info": "0",
+      "infoIndex": "1",
+      "storage": "1",
+      "varName": "serverid",
+      "name": "Store Command Params"
+    },
+    {
+      "info": "0",
+      "infoIndex": "2",
+      "storage": "1",
+      "varName": "newprefix",
+      "name": "Store Command Params"
+    },
+    {
+      "behavior": "0",
+      "interpretation": "0",
+      "code": "var result = Bot.prefixes.find((element) => {return element.serverid === tempVars(\"serverid\")} ) \n\nif(result){\n  Bot.prefixes.find((element) => {return element.serverid === tempVars(\"serverid\")} ).prefix = tempVars(\"newprefix\") \n\n  var fs = require('fs');\n  var path = require('path');\n  fs.writeFile(path.join(\"data\",\"serverPrefixes.json\"), JSON.stringify(Bot.prefixes, null, 2), function(err) {\n    if(err) return console.log(err);   \n    msg.channel.send(\"Prefix for server '\" + server.name + \"' was changed to \" + result.prefix)\n  }); \n}\nelse\n{\n  msg.channel.send(\"Prefix not assigned to the provided serverid or the serverid is wrong.\")\n}\n",
+      "storage": "0",
+      "varName": "",
+      "name": "Run Script"
+    }
+  ]
+}
+```
+
 **More To Come**
 
 People will eventually create commands using this, they will be listed somewhere in the readme!
