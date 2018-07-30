@@ -1,6 +1,12 @@
 
 # DBM Mods Server Assigned Prefixes
 
+
+# Try Version 2 here on this gist, it doesn't require bot.js modifications!
+
+https://gist.github.com/generalwrex/682f40dff2414613db52cbc5d469b4c2
+
+
 ## Note: You can only use one modified bot.js at a time currently.
 
 Allows your bot created by Discord Bot Maker to use a server assigned prefixes
