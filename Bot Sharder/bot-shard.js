@@ -1,12 +1,12 @@
 /*
  * Discord Bot Maker Bot
- * Version 2.0.0
+ * Version 2.0.1
  * Robert Borghese
  */
 
-// Modified by General Wrex.
-// DBM Bot Sharder - Version alpha-1.0.1
- 
+ // Modified by General Wrex.
+ // DBM Bot Sharder - Version 1.0.2
+
 const DBM = {};
 const DiscordJS = DBM.DiscordJS = require('discord.js');
 
@@ -105,8 +105,8 @@ Bot.login = function() {
 	this.bot.login(Files.data.settings.token);
 };
 
-Bot.onReady = function() {	   
-	var shard = new DiscordJS.ShardClientUtil(this.bot);			
+Bot.onReady = function() {
+    var shard = new DiscordJS.ShardClientUtil(this.bot);			
 	if(process.send) process.send({name:'init', data: this.bot.shard.id});
 };
 
@@ -1062,10 +1062,10 @@ Images.createBuffer = function(image) {
 Images.drawImageOnImage = function(img1, img2, x, y) {
 	for(let i = 0; i < img2.bitmap.width; i++) {
 		for(let j = 0; j < img2.bitmap.height; j++) {
-			var pos = (i * (img2.bitmap.width * 4)) + (j * 4);
-			var pos2 = ((i + y) * (img1.bitmap.width * 4)) + ((j + x) * 4);
-			var target = img1.bitmap.data;
-			var source = img2.bitmap.data;
+			const pos = (i * (img2.bitmap.width * 4)) + (j * 4);
+			const pos2 = ((i + y) * (img1.bitmap.width * 4)) + ((j + x) * 4);
+			const target = img1.bitmap.data;
+			const source = img2.bitmap.data;
 			for(let k = 0; k < 4; k++) {
 				target[pos2 + k] = source[pos + k];
 			}
@@ -1093,11 +1093,18 @@ Files.dataFiles = [
 	'globalVars.json'
 ];
 
-Files.initStandalone = function() {
+Files.startBot = function() {
 	const fs = require('fs');
 	const path = require('path');
-	Actions.location = path.join(process.cwd(), 'actions');
-	if(fs.existsSync(Actions.location)) {
+	if(process.env['IsDiscordBotMakerTest'] === 'true') {
+		Actions.location = process.env['ActionsDirectory'];
+		this.initBotTest();
+	} else if(process.argv.length >= 3 && fs.existsSync(process.argv[2])) {
+		Actions.location = process.argv[2];
+	} else {
+		Actions.location = path.join(process.cwd(), 'actions')
+	}
+	if(typeof Actions.location === 'string' && fs.existsSync(Actions.location)) {
 		Actions.initMods();
 		this.readData(Bot.init.bind(Bot));
 	} else {
@@ -1106,23 +1113,17 @@ Files.initStandalone = function() {
 };
 
 Files.initBotTest = function(content) {
-	if(content) {
-		Actions.location = String(content);
-		Actions.initMods();
-		this.readData(Bot.init.bind(Bot));
+	this._console_log = console.log;
+	console.log = function() {
+		process.send(String(arguments[0]));
+		Files._console_log.apply(this, arguments);
+	};
 
-		const _console_log = console.log;
-		console.log = function() {
-			process.send(String(arguments[0]));
-			_console_log.apply(this, arguments);
-		};
-
-		const _console_error = console.error;
-		console.error = function() {
-			process.send(String(arguments[0]));
-			_console_error.apply(this, arguments);
-		};
-	}
+	this._console_error = console.error;
+	console.error = function() {
+		process.send(String(arguments[0]));
+		Files._console_error.apply(this, arguments);
+	};
 };
 
 Files.readData = function(callback) {
@@ -1676,21 +1677,14 @@ DiscordJS.Emoji.prototype.convertToString = function() {
 
 process.on("message", (message) => {	
 	if(message !== undefined){
-		if(typeof message === 'object'){
-			 
-	 		
-		}else{   
-			if(message == "shardsloaded"){			
-				console.log('Bot is ready!');
-				Bot.restoreVariables();
-				Bot.preformInitialization();			
-			}	 	 
-		}		
+		if(message == "shardsloaded"){			
+			console.log('Bot is ready!');
+			Bot.restoreVariables();
+			Bot.preformInitialization();			
+		}	 	 				
 	}		
 });
 
-
 module.exports = DBM;
 
-Files.initStandalone();
-
+Files.startBot();
