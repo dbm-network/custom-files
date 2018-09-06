@@ -1,5 +1,5 @@
 
-**NOTE: Do NOT use this unless you have over 2500 guilds, there is no point if its below, it uses more resources, and will probally break commands that you already use**
+**NOTE: Do NOT use this unless your bot is in over 2500 guilds, there is no point if its below, it uses more resources, and will probally break commands that you already use**
 
 # DBM Mods Bot Sharding
 
