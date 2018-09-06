@@ -1,7 +1,10 @@
 
+**NOTE: Do NOT use this unless you have over 2500 guilds, there is no point if its below, it uses more resources, and will probally break commands that you already use**
+
 # DBM Mods Bot Sharding
 
 **Allows your bot created by Discord Bot Maker to take advantage of sharding!**
+
 
 Installation
 ====
@@ -24,7 +27,7 @@ In the command window that opens, type `node sharded-bot.js`
 ![node](https://i.gyazo.com/a2f31037eb4dd6623da6bbd5a88a236e.png)
 
 
-If you want to run it with a linux terminal then instead of running it with `bot node.js` you run it `node sharded-bot.js`
+If you want to run it with a linux terminal then instead of running it with `bot node.js` you run it `node sharded-bot.js` if you want to provide a different shard count its `node sharded-bot.js shard_count=3` if you wanted 3 shards ( This is usually not needed unless your bot is in 5000 guilds.  )
 
 
 
