@@ -104,7 +104,7 @@ if(!getToken()){
 }
 
 const Discord = require('discord.js');
-const manager = new Discord.ShardingManager('./test.js', {
+const manager = new Discord.ShardingManager('./bot.js', {
 	token: getToken() 
 	});
 	
