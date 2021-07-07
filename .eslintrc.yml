@@ -1,11 +1,12 @@
 env:
-  commonjs: true
-  es6: true
+  browser: true
   node: true
+  commonjs: true
+  es2020: true
 extends:
   - standard
 parserOptions:
-  ecmaVersion: 2019
+  ecmaVersion: 11
 rules:
   linebreak-style:
     - error
@@ -20,3 +21,4 @@ rules:
   prefer-promise-reject-errors: off
   no-eval: off
   semi: always
+
