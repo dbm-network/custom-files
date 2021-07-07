@@ -14,8 +14,8 @@ console.log('TheMonDon\'s DBM Bot Sharder');
 console.log(`Version: ${version}`);
 console.log('You can change the amount of shards by providing \'shard_count=[number]\' (default: auto)')
 console.log('---------------------------------------------');
-let totalShards = 'auto';
 
+let totalShards = 'auto';
 
 const args = process.argv
 	.slice(2)
