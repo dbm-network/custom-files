@@ -20,5 +20,6 @@ rules:
   no-useless-constructor: off
   prefer-promise-reject-errors: off
   no-eval: off
-  semi: always
-
+  semi:
+    - error
+    - always
