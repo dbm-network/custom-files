@@ -8,9 +8,9 @@
 
 Installation
 ====
-Download the ZIP and extract the files to your Bot Base Folder.
+Download the [ZIP file here](https://downgit.github.io/#/home?url=https://github.com/TheMonDon/custom-files/blob/master/Bot%20Sharder/sharded-bot.js) and extract the file to your Bot Base Folder.
 
-Your Bot folder should look like this:
+Your Bot folder should look like this: (outdated())
 
 ![shard](https://i.gyazo.com/97ac758cb15b87be9df98019d42fc3b6.png)
 
@@ -18,7 +18,7 @@ Your Bot folder should look like this:
 Running
 ====
 
-Once those are in the folder, up at the top where the path is, select everything in there and type cmd and press enter:
+Once those are in the folder, up at the top where the path is, select everything in there and type cmd and press enter: (outdated())
 ![cmd](https://i.gyazo.com/9b70a9d74141836672e34106d37d1a61.png)
 
 
