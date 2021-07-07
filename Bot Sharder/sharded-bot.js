@@ -1,16 +1,49 @@
 // Made by TheMonDon#1721
 // Some code by General Wrex
-
-// If you don't want auto sharding amount change this to the amount of shards you want:
-// const totalShards = 2
-const totalShards = 'auto'
+const version = '1.0.0';
 
 // Include discord.js and original check
-const DiscordJS = require('discord.js');
-if (DiscordJS.version < "12.0.0") {
+const {version: _version, ShardingManager} = require('discord.js');
+if (_version < "12.0.0") {
 	console.log("This version of Discord Bot Maker requires Discord.JS v12.\nPlease use \"Project > Module Manager\" and \"Project > Reinstall Node Modules\" to update to Discord.JS v12.");
 	throw new Error('Need Discord.JS v12 to Run!!!');
 }
+
+console.log('---------------------------------------------');
+console.log('TheMonDon\'s DBM Bot Sharder');
+console.log(`Version: ${version}`);
+console.log('You can change the amount of shards by providing \'shard_count=[number]\' (default: auto)')
+console.log('---------------------------------------------');
+let totalShards = 'auto';
+
+
+const args = process.argv
+	.slice(2)
+	.map((val, i)=>{
+	let object = {};
+	let [regexForProp, regexForVal] = (() => [new RegExp('^(.+?)='), new RegExp('\=(.*)')] )();
+	let [prop, value] = (() => [regexForProp.exec(val), regexForVal.exec(val)] )();
+	if (!prop){
+		object[val] = true;
+		return object;
+	} else {
+		object[prop[1]] = value[1] ;
+		return object
+	}
+	})
+	.reduce((obj, item) => {
+	let prop = Object.keys(item)[0];
+	obj[prop] = item[prop];
+	return obj;
+	}, {});
+
+	if(args && args.shard_count){
+		console.log(`Command Line Arg: shard_count=${args.shard_count}`)
+		totalShards = Number(args.shard_count);
+	}
+
+
+console.log(`Starting the DBM Bot with ${totalShards} total shards...`)
 
 function getToken() {
 	// dbm's encryption system
@@ -55,7 +88,7 @@ if (!getToken()){
 }
 
 // Create your ShardingManger instance
-const manager = new DiscordJS.ShardingManager('./bot.js', {
+const manager = new ShardingManager('./bot.js', {
     // for ShardingManager options see:
     // https://discord.js.org/#/docs/main/v12/class/ShardingManager
     totalShards,
