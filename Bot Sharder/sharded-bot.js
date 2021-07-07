@@ -54,7 +54,7 @@ function getToken() {
 		password = require('discord-bot-maker');
 	} catch {}
 
-	const decrypt = function (text) {
+	const decrypt = (text) => {
 		if (password.length === 0) return text;
 		const decipher = crypto.createDecipheriv('aes-128-ofb', password);
 		let dec = decipher.update(text, 'hex', 'utf8');
