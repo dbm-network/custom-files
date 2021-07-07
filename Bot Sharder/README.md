@@ -27,7 +27,10 @@ In the command window that opens, type `node sharded-bot.js`. It should look som
 ![node](https://i.imgur.com/AKuzOrR.png)
 
 
-If you want to run it with a linux terminal then instead of running it with `bot node.js` you run it `node sharded-bot.js` if you want to provide a different shard count its `node sharded-bot.js shard_count=3` if you wanted 3 shards ( This is usually not needed unless your bot is in 5000 guilds.  )
+If you are running on linux replace `node bot.js` with `node sharded-bot.js`.
+
+If you want to provide a different shard count add `shard_count=[number]` after `node sharded-bot.js`; ex. `node sharded-bot.js shard_count=3`.
+The default shard_count parameter is set to auto (determined by discord.js), you can usually leave this.
 
 **If you want to do anything across shards.  You will need to use** [`client.shard.broadCastEval()`](https://discord.js.org/#/docs/main/stable/class/ShardClientUtil?scrollTo=broadcastEval)
 
