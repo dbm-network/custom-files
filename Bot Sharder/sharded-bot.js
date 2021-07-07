@@ -84,7 +84,6 @@ function getToken() {
 
 if (!getToken()){	
 	console.error(`Token must be supplied in 'settings.json' in the data folder, double check your bot settings!`);
-	return;
 }
 
 // Create your ShardingManger instance
