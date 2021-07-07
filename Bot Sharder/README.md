@@ -8,7 +8,7 @@
 
 Installation
 ====
-Download the [ZIP file here](https://downgit.github.io/#/home?url=https://github.com/TheMonDon/custom-files/blob/master/Bot%20Sharder/sharded-bot.js) and extract the file to your Bot Base Folder.
+Download the [ZIP file here](https://downgit.github.io/#/home?url=https://github.com/dbm-network/custom-files/blob/master/Bot%20Sharder/sharded-bot.js) and extract the file to your Bot Base Folder.
 
 Your Bot folder should look like this:
 
@@ -32,4 +32,3 @@ If you want to run it with a linux terminal then instead of running it with `bot
 **If you want to do anything across shards.  You will need to use** [`client.shard.broadCastEval()`](https://discord.js.org/#/docs/main/stable/class/ShardClientUtil?scrollTo=broadcastEval)
 
 **Please read the API docs!**
-
