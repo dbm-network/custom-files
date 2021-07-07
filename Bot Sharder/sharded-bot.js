@@ -21,7 +21,7 @@ const args = process.argv
   .slice(2)
   .map((val, i) => {
     const object = {};
-    const [regexForProp, regexForVal] = (() => [new RegExp('^(.+?)='), new RegExp('\=(.*)')])();
+    const [regexForProp, regexForVal] = (() => [/^(.+?)=/, /=(.*)/])();
     const [prop, value] = (() => [regexForProp.exec(val), regexForVal.exec(val)])();
     if (!prop) {
       object[val] = true;
