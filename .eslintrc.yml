@@ -10,7 +10,7 @@ parserOptions:
 rules:
   linebreak-style:
     - error
-    - windows
+    - unix
   object-shorthand:
     - error
     - always
