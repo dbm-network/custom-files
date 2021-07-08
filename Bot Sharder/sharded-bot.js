@@ -3,8 +3,8 @@
 const version = '1.0.1';
 
 // Include discord.js and original check
-const { version: _version, ShardingManager } = require('discord.js');
-if (_version < '12.0.0') {
+const { version: djsVersion, ShardingManager } = require('discord.js');
+if (djsVersion < '12.0.0') {
   console.log('This version of Discord Bot Maker requires Discord.JS v12.\nPlease use "Project > Module Manager" and "Project > Reinstall Node Modules" to update to Discord.JS v12.');
   throw new Error('Need Discord.JS v12 to Run!!!');
 }
