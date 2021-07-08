@@ -44,50 +44,47 @@ if (args && args.shard_count) {
 
 console.log(`Starting the DBM Bot with ${totalShards} total shards...`);
 
-function getToken () {
-  // dbm's encryption system
-  const crypto = require('crypto');
-  let password = '';
+// dbm's encryption system
+const crypto = require('crypto');
+let password = '';
+let token;
 
+try {
+  password = require('discord-bot-maker');
+} catch {}
+
+const decrypt = (text) => {
+  if (password.length === 0) return text;
+  const decipher = crypto.createDecipheriv('aes-128-ofb', password);
+  let dec = decipher.update(text, 'hex', 'utf8');
+  dec += decipher.final('utf8');
+  return dec;
+};
+
+const fs = require('fs');
+const path = require('path');
+const filePath = path.join(process.cwd(), 'data', 'settings.json');
+
+if (fs.existsSync(filePath)) {
+  let content = fs.readFileSync(filePath);
   try {
-    password = require('discord-bot-maker');
-  } catch {}
-
-  const decrypt = (text) => {
-    if (password.length === 0) return text;
-    const decipher = crypto.createDecipheriv('aes-128-ofb', password);
-    let dec = decipher.update(text, 'hex', 'utf8');
-    dec += decipher.final('utf8');
-    return dec;
-  };
-
-  const fs = require('fs');
-  const path = require('path');
-  const filePath = path.join(process.cwd(), 'data', 'settings.json');
-
-  if (fs.existsSync(filePath)) {
-    let content = fs.readFileSync(filePath);
-    try {
-      if (typeof content !== 'string' && content.toString) content = content.toString();
-      return JSON.parse(decrypt(content)).token;
-    } catch (e) {
-      console.error('There was issue parsing settings.json!');
-    }
-  } else {
-    console.error('Could not find the settings.json file');
+    if (typeof content !== 'string' && content.toString) content = content.toString();
+    token = JSON.parse(decrypt(content)).token;
+  } catch {
+    console.error('There was issue parsing settings.json!');
   }
+} else {
+  console.error('Could not find the settings.json file');
 }
 
-if (!getToken()) {
-  console.error('Token must be supplied in \'settings.json\' in the data folder, double check your bot settings!');
-}
+if (!token) console.error('Token must be supplied in \'settings.json\' in the data folder, double check your bot settings!');
 
 // Create your ShardingManger instance
 const manager = new ShardingManager('./bot.js', {
   // for ShardingManager options see:
   // https://discord.js.org/#/docs/main/v12/class/ShardingManager
   totalShards,
-  token: getToken()
+  token
 });
 
 manager.on('shardCreate', (shard) => console.log(`Shard ${shard.id} launched`));
