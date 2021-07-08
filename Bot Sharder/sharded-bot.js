@@ -9,7 +9,7 @@ if (djsVersion < '12.0.0') {
   throw new Error('Need Discord.JS v12 to Run!!!');
 }
 
-console.log('---------------------------------------------');
+console.log('-'.repeat(50));
 console.log('TheMonDon\'s DBM Bot Sharder');
 console.log(`Version: ${version}`);
 console.log('You can change the amount of shards by providing \'shard_count=[number]\' (default: auto)');
