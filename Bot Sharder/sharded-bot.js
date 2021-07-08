@@ -90,7 +90,6 @@ const manager = new ShardingManager('./bot.js', {
   token: getToken()
 });
 
-// Emitted when a shard is created
 manager.on('shardCreate', (shard) => console.log(`Shard ${shard.id} launched`));
 
 manager.spawn();
