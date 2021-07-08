@@ -8,7 +8,7 @@
 
 Installation
 ====
-Download the [ZIP file here](https://downgit.github.io/#/home?url=https://github.com/dbm-network/custom-files/blob/master/Bot%20Sharder/sharded-bot.js) and extract the file to your Bot Base Folder.
+Download the [ZIP file](https://downgit.github.io/#/home?url=https://github.com/dbm-network/custom-files/blob/master/Bot%20Sharder/sharded-bot.js) and extract the file to your bot folder.
 
 Your Bot folder should look like this:
 
