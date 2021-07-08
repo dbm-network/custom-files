@@ -13,7 +13,7 @@ console.log('-'.repeat(50));
 console.log('TheMonDon\'s DBM Bot Sharder');
 console.log(`Version: ${version}`);
 console.log('You can change the amount of shards by providing \'shard_count=[number]\' (default: auto)');
-console.log('---------------------------------------------');
+console.log('-'.repeat(50));
 
 let totalShards = 'auto';
 
@@ -38,8 +38,8 @@ const args = process.argv
   }, {});
 
 if (args && args.shard_count) {
-  console.log(`Command Line Arg: shard_count=${args.shard_count}`);
-  totalShards = Number(args.shard_count);
+  totalShards = parseInt(args.shard_count, 10);
+  console.log(`Command Line Arg: shard_count=${totalShards}`);
 }
 
 console.log(`Starting the DBM Bot with ${totalShards} total shards...`);

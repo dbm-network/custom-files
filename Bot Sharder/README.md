@@ -23,7 +23,7 @@ Once those are in the folder, up at the top where the path is, select everything
 
 
 
-In the command window that opens, type `node sharded-bot.js`. It should look somewhat similar to this.
+In the Command Prompt window that opens, type `node sharded-bot.js`. It should look somewhat similar to this.
 ![node](https://i.imgur.com/AKuzOrR.png)
 
 
@@ -32,6 +32,6 @@ If you are running on linux replace `node bot.js` with `node sharded-bot.js`.
 If you want to provide a different shard count add `shard_count=[number]` after `node sharded-bot.js`; ex. `node sharded-bot.js shard_count=3`.
 The default `shard_count` parameter is set to `auto` (determined by discord.js), which is fine for most bots.
 
-**If you want to do anything across shards.  You will need to use** [`client.shard.broadCastEval()`](https://discord.js.org/#/docs/main/stable/class/ShardClientUtil?scrollTo=broadcastEval)
+**If you want to do anything across shards you will need to use** [`client.shard.broadCastEval()`](https://discord.js.org/#/docs/main/stable/class/ShardClientUtil?scrollTo=broadcastEval)
 
 **Please read the API docs!**
