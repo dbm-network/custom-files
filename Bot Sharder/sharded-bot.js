@@ -74,7 +74,7 @@ function getToken () {
       console.error('There was issue parsing settings.json!');
     }
   } else {
-    console.error('settings.json does not exist!');
+    console.error('Could not find the settings.json file');
   }
 }
 
