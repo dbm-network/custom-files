@@ -1,172 +1,100 @@
-// Created by General Wrex under the MIT license.
-// Thanks to EGGSY#3388 for testing and the initial idea!
-// My Patreons have made creating this script possible @ https://www.patreon.com/generalwrex
-// At the time of editing this script, they are:
-// - MitchDaGamer
-//
-// Thanks so much guys, you allow me to continue to do what i love!	
-// I now accept donations through donorbox: https://donorbox.org/generalwrex
-// and also direct to my paypal: https://www.paypal.me/generalwrex
-//---------------------------------------------------------------------
+// Made by TheMonDon#1721
+// Some code by General Wrex
+const version = '1.1';
 
-const { r, g, b, w, c, m, y, k } = [
-  ['r', 1], ['g', 2], ['b', 4], ['w', 7],
-  ['c', 6], ['m', 5], ['y', 3], ['k', 0],
-].reduce((cols, col) => ({
-  ...cols,  [col[0]]: f => `\x1b[3${col[1]}m${f}\x1b[0m`
-}), {})
-
-
-console.log(g('---------------------------------------------'))
-console.log(g('General Wrex\'s DBM Bot Sharder\r\n'))
-console.log(y('Version alpha-1.0.1\r\n\r\n'))
-console.log(r(`Ask in the DBM Mods guild for help! https://discord.gg/Y4fPBnZ`))
-console.log(g(`You can change the amount of shards by providing'shard_count=[number]'\r\n`))
-console.log(r(`e.x node sharded-bot.js shard_count=3\r\n\r\n`))
-//console.log(y(`you may type 'quit' at anytime to stop all the shards,\nand type directly into the console to broadcast a message to all shards\r\nthis is for a future update`))
-console.log(g('---------------------------------------------'))
-
-var totalShards = 2;
-
-
-	const args = process.argv
-	  .slice(2)
-	  .map((val, i)=>{
-		let object = {};
-		let [regexForProp, regexForVal] = (() => [new RegExp('^(.+?)='), new RegExp('\=(.*)')] )();
-		let [prop, value] = (() => [regexForProp.exec(val), regexForVal.exec(val)] )();
-		if(!prop){
-		  object[val] = true;
-		  return object;
-		} else {
-		  object[prop[1]] = value[1] ;
-		  return object
-		}
-	  })
-	  .reduce((obj, item) => {
-		let prop = Object.keys(item)[0];
-		obj[prop] = item[prop];
-		return obj;
-	  }, {});
-  
-	
-	if(args && args.shard_count){
-		console.log(`Command Line Arg: shard_count=${args.shard_count}`)
-		totalShards = args.shard_count;
-	}
-
-
-console.log(y(`Starting the DBM Bot with ${totalShards} total shards...`))
-
-
-function getToken(){
-	// dbm's encryption system
-	var crypto = require('crypto');
-
-	let password ='';
-
-	try {
-		password = require('discord-bot-maker');
-	} catch(e) {}
-
-	var decrypt = function(text) {
-		if(password.length === 0) return text;
-		const decipher = this.crypto.createDecipher('aes-128-ofb', password);
-		let dec = decipher.update(text, 'hex', 'utf8');
-		dec += decipher.final('utf8');
-		return dec;
-	};
-
-	const fs = require('fs');
-	const path = require('path');	
-
-	const filePath = path.join(process.cwd(),'data', 'settings.json');
-
-
-	if(fs.existsSync(filePath)){
-		var content = fs.readFileSync(filePath) 
-		try {
-			if(typeof content !== 'string' && content.toString) content = content.toString();
-			return JSON.parse(decrypt(content)).token;
-		} catch(e) {
-			console.error(`There was issue parsing settings.json!`);
-			return;
-		}
-
-	}else{
-		console.error(`settings.json does not exist!`);
-	}					
+// Include discord.js and original check
+const { version: djsVersion, ShardingManager } = require('discord.js');
+if (djsVersion < '12.0.0') {
+  console.log(
+    'This version of Discord Bot Maker requires Discord.JS v12.\nPlease use "Project > Module Manager" and "Project > Reinstall Node Modules" to update to Discord.JS v12.',
+  );
+  throw new Error('Need Discord.JS v12 to Run!!!');
 }
 
-if(!getToken()){	
-	console.error(r(`Token must be supplied in 'settings.json' in the data folder, double check your bot settings!`))
-	return;
+console.log('-'.repeat(50));
+console.log("TheMonDon's DBM Bot Sharder");
+console.log(`Version: ${version}`);
+console.log("You can change the amount of shards by providing '--shard_count=[number]' (default: auto)");
+console.log("You can change the bot file by providing '--startup=./index.js' (default bot.js)");
+console.log('-'.repeat(50));
+
+let totalShards = 'auto';
+let startup = './bot.js';
+
+function getArgs() {
+  const args = {};
+  process.argv.slice(2, process.argv.length).forEach((arg) => {
+    if (arg.slice(0, 2) === '--') {
+      const longArg = arg.split('=');
+      const longArgFlag = longArg[0].slice(2, longArg[0].length);
+      const longArgValue = longArg.length > 1 ? longArg[1] : true;
+      args[longArgFlag] = longArgValue;
+    } else if (arg[0] === '-') {
+      const flags = arg.slice(1, arg.length).split('');
+      flags.forEach((flag) => {
+        args[flag] = true;
+      });
+    }
+  });
+  return args;
 }
 
-const Discord = require('discord.js');
-const manager = new Discord.ShardingManager('./bot-shard.js', {
-	token: getToken() 
-	});
-	
-manager.spawn(Number(totalShards)); 
+const args = getArgs();
+if (args && args.shard_count) {
+  totalShards = parseInt(args.shard_count, 10);
+  console.log(`Command Line Arg: shard_count=${totalShards}`);
+}
+if (args && args.startup) {
+  startup = args.startup;
+  console.log(`Command Line Arg: startup=${startup} (Bot File)`);
+}
 
-var loadedShards = 0;
+console.log(`Starting the DBM Bot with ${totalShards} total shards...`);
 
-manager.on('launch', shard => {
-	console.log(g(`Successfully launched shard with ID of ${shard.id}`))		
-});
+// dbms' encryption system
+const crypto = require('crypto');
+let password = '';
+let token;
 
+try {
+  password = require('discord-bot-maker');
+} catch {}
 
-manager.on("message", (shard, message) => {	
-	if(message !== undefined){
-		if(typeof message === 'object'){
-			
-			//console.log(y("Event from shard " + shard.id + " :[" + message.name + "] "));	
-	 
-	 		if(message.name === "init"){
-				if((manager.shards.array().length) == manager.totalShards ){
-					shard.send('shardsloaded', manager);
-					console.log(g("All Shards Loaded!"))
-				}else{
-					console.log(g(`Successfully launched shard with ID of ${shard.id}`))	
-				}
-			}
-	 
-			if(message.name === "shard"){
-				shard.send({ name: "shardresponse", data: shard.id });
-			}
-	 
-		}else{   
-				
-		}
-		
-	}		
-});
-
-
-var readline = require('readline');
-var log = console.log;
-
-var rl = readline.createInterface({
-	input: process.stdin,
-	 output: process.stdout
-});
-
-var recursiveAsyncReadLine = function () {
-	rl.question('', function (answer) {
-		if (answer == 'exit'){
-			process.exit(0);			
-		} else {
-			manager.broadcast(answer)		
-		} 
-
-		log('Sending ' + answer + " to all shards...");
-		recursiveAsyncReadLine(); //Calling this function again to ask new question
-	});
+const decrypt = (text) => {
+  if (password.length === 0) return text;
+  const decipher = crypto.createDecipheriv('aes-128-ofb', password);
+  let dec = decipher.update(text, 'hex', 'utf8');
+  dec += decipher.final('utf8');
+  return dec;
 };
 
-//recursiveAsyncReadLine(); //we have to actually start our recursion somehow
-	
+const { existsSync, readFileSync } = require('fs');
+const { join } = require('path');
+const filePath = join(process.cwd(), 'data', 'settings.json');
 
+if (existsSync(filePath)) {
+  const content = readFileSync(filePath).toString();
+  try {
+    token = JSON.parse(decrypt(content)).token;
+  } catch (err) {
+    console.error('There was issue parsing settings.json! ', err.stack || err);
+  }
+} else {
+  console.error('Could not find the settings.json file');
+}
 
+if (!token) {
+  console.error("Token must be supplied in 'settings.json' in the data folder, double check your bot settings!");
+}
 
+// Create your ShardingManger instance
+const manager = new ShardingManager(startup, {
+  // for ShardingManager options see:
+  // https://discord.js.org/#/docs/main/stable/class/ShardingManager
+  totalShards,
+  token,
+});
+
+manager.on('shardCreate', (shard) => console.log(`Shard ${shard.id} launched`));
+
+manager.spawn();

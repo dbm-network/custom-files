@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+/.github export-ignore
+.editorconfig export-ignore
+.eslintrc.json export-ignore
+.gitignore export-ignore
+.prettierrc.json export-ignore
+.prettierignore export-ignore
+package-lock.json export-ignore
+package.json export-ignore
