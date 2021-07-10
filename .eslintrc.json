@@ -16,6 +16,7 @@
     "no-negated-condition": 0,
     "no-useless-constructor": 0,
     "prefer-destructuring": 0,
-    "prefer-rest-params": 0
+    "prefer-rest-params": 0,
+    "space-before-function-paren": 2
   }
 }
