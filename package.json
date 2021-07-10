@@ -1,18 +1,23 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "custom-files",
   "repository": "https://github.com/dbm-network/custom-files",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --fix --cache .",
+    "prettier:check": "prettier * --check --ignore-unknown",
+    "prettier:fix": "prettier * --write --ignore-unknown"
+  },
+  "engines": {
+    "npm": "7"
   },
   "devDependencies": {
     "eslint": "^7.30.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-standard": "^4.1.0"
+    "eslint-config-aqua": "^9.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2"
   }
 }
