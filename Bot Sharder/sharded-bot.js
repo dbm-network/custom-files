@@ -1,6 +1,6 @@
 // Made by TheMonDon#1721
 // Some code by General Wrex
-const version = '1.0.1';
+const version = '1.1';
 
 // Include discord.js and original check
 const { version: djsVersion, ShardingManager } = require('discord.js');
@@ -12,34 +12,41 @@ if (djsVersion < '12.0.0') {
 console.log('-'.repeat(50));
 console.log('TheMonDon\'s DBM Bot Sharder');
 console.log(`Version: ${version}`);
-console.log('You can change the amount of shards by providing \'shard_count=[number]\' (default: auto)');
+console.log('You can change the amount of shards by providing \'--shard_count=[number]\' (default: auto)');
+console.log('You can change the bot file by providing \'--startup=./index.js\' (default bot.js)');
 console.log('-'.repeat(50));
 
 let totalShards = 'auto';
+let startup = './bot.js';
 
-const args = process.argv
-  .slice(2)
-  .map((val, i) => {
-    const object = {};
-    const [regexForProp, regexForVal] = (() => [/^(.+?)=/, /=(.*)/])();
-    const [prop, value] = (() => [regexForProp.exec(val), regexForVal.exec(val)])();
-    if (!prop) {
-      object[val] = true;
-      return object;
-    } else {
-      object[prop[1]] = value[1];
-      return object;
-    }
-  })
-  .reduce((obj, item) => {
-    const prop = Object.keys(item)[0];
-    obj[prop] = item[prop];
-    return obj;
-  }, {});
+function getArgs () {
+  const args = {};
+  process.argv
+    .slice(2, process.argv.length)
+    .forEach(arg => {
+      if (arg.slice(0, 2) === '--') {
+        const longArg = arg.split('=');
+        const longArgFlag = longArg[0].slice(2, longArg[0].length);
+        const longArgValue = longArg.length > 1 ? longArg[1] : true;
+        args[longArgFlag] = longArgValue;
+      } else if (arg[0] === '-') {
+        const flags = arg.slice(1, arg.length).split('');
+        flags.forEach(flag => {
+          args[flag] = true;
+        });
+      }
+    });
+  return args;
+}
 
+const args = getArgs();
 if (args && args.shard_count) {
   totalShards = parseInt(args.shard_count, 10);
   console.log(`Command Line Arg: shard_count=${totalShards}`);
+}
+if (args && args.startup) {
+  startup = args.startup;
+  console.log(`Command Line Arg: startup=${startup} (Bot File)`);
 }
 
 console.log(`Starting the DBM Bot with ${totalShards} total shards...`);
@@ -51,7 +58,7 @@ let token;
 
 try {
   password = require('discord-bot-maker');
-} catch {}
+} catch { }
 
 const decrypt = (text) => {
   if (password.length === 0) return text;
@@ -80,7 +87,7 @@ if (fs.existsSync(filePath)) {
 if (!token) console.error('Token must be supplied in \'settings.json\' in the data folder, double check your bot settings!');
 
 // Create your ShardingManger instance
-const manager = new ShardingManager('./bot.js', {
+const manager = new ShardingManager(startup, {
   // for ShardingManager options see:
   // https://discord.js.org/#/docs/main/v12/class/ShardingManager
   totalShards,

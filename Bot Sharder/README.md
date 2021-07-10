@@ -27,10 +27,11 @@ In the Command Prompt window that opens, type `node sharded-bot.js`. It should l
 ![node](https://i.imgur.com/AKuzOrR.png)
 
 
-If you are running on linux replace `node bot.js` with `node sharded-bot.js`.
-
-If you want to provide a different shard count add `shard_count=[number]` after `node sharded-bot.js`; ex. `node sharded-bot.js shard_count=3`.
+If you want to provide a different shard count add `--shard_count=[number]` after `node sharded-bot.js`; ex. `node sharded-bot.js --shard_count=3`.
 The default `shard_count` parameter is set to `auto` (determined by discord.js), which is fine for most bots.
+
+To change the bot startup file add `--startup=./index.js` after `node sharded-bot.js`; ex. `node sharded-bot.js --startup=./index.js`.
+The default `startup` parameter is set to `bot.js` (Default file for Discord Bot Maker)
 
 **If you want to do anything across shards you will need to use** [`client.shard.broadCastEval()`](https://discord.js.org/#/docs/main/stable/class/ShardClientUtil?scrollTo=broadcastEval)
 
