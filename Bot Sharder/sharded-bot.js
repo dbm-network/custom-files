@@ -97,4 +97,4 @@ const manager = new ShardingManager(startup, {
 
 manager.on('shardCreate', (shard) => console.log(`Shard ${shard.id} launched`));
 
-manager.spawn();
+manager.spawn(Number(totalShards), 5500, -1); 
